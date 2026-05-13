@@ -3,6 +3,34 @@
 
 const { useState, useEffect, useRef } = React;
 
+// ---------- URL-based language routing ----------
+// /          → default lang
+// /ru/, /en/ → explicit lang via subpath
+// ?lang=ru   → explicit lang via query string
+// Works under custom domain (benfenley.com) and project-pages
+// (benfenley.github.io/shortwaves/) — site base is whatever remains
+// after stripping a trailing /(ru|en)/? segment.
+function detectSiteAndLang() {
+  let base = "/";
+  let lang = null;
+  try {
+    const path = window.location.pathname;
+    const m = path.match(/^(.*?)\/(ru|en)\/?$/);
+    if (m) {
+      base = (m[1] || "") + "/";
+      lang = m[2];
+    } else {
+      base = path.endsWith("/") ? path : path.replace(/[^/]*$/, "");
+      if (!base) base = "/";
+      const q = new URLSearchParams(window.location.search).get("lang");
+      if (q === "ru" || q === "en") lang = q;
+    }
+  } catch {}
+  return { base, lang };
+}
+const { base: SITE_BASE, lang: INITIAL_LANG_FROM_URL } = detectSiteAndLang();
+const asset = (p) => SITE_BASE + p.replace(/^\//, "");
+
 // ---------- small decorative primitives ----------
 
 function RadioWaves({ size = 40, strokeWidth = 1 }) {
@@ -168,7 +196,7 @@ function Hero({ t, lang, showMap }) {
         <aside className="hero__vitrine" aria-label="book cover">
           <div className="vitrine">
             <div className="vitrine__shadow" aria-hidden="true"></div>
-            <img className="vitrine__cover" src="assets/cover.png" alt={lang === "ru" ? "Обложка «Короткие волны»" : "Short Waves cover"} />
+            <img className="vitrine__cover" src={asset("assets/cover.png")} alt={lang === "ru" ? "Обложка «Короткие волны»" : "Short Waves cover"} />
           </div>
           <ul className="hero__meta">
             {t.heroMeta.map((m, i) => <li key={i}>{m}</li>)}
@@ -204,9 +232,9 @@ function About({ t }) {
 function Cards({ t, lang }) {
   const slotIds = ["card-radio", "card-exile", "card-connection"];
   const slotSrcs = [
-    "assets/card-radio.jpg",
-    "assets/card-exile.jpg",
-    "assets/card-connection.jpg",
+    asset("assets/card-radio.jpg"),
+    asset("assets/card-exile.jpg"),
+    asset("assets/card-connection.jpg"),
   ];
   const slotHints = lang === "ru"
     ? ["иллюстрация: радио", "иллюстрация: эмиграция", "иллюстрация: связи"]
@@ -258,9 +286,9 @@ function Excerpt({ t, lang }) {
         <div className="excerpt__paper">
           <div className="excerpt__paper-edge" aria-hidden="true"></div>
           <div className="excerpt__stampbox" aria-hidden="true">
-            <img src="assets/stamp-levin.png" alt="" />
+            <img src={asset("assets/stamp-levin.png")} alt="" />
           </div>
-          <p className="excerpt__heading">{t.excerptHeading}</p>
+          {t.excerptHeading && <p className="excerpt__heading">{t.excerptHeading}</p>}
           <div className="excerpt__body">
             {t.excerptLines.map((item, i) => {
               if (typeof item === "string") {
@@ -304,7 +332,7 @@ function ArtifactCard({ a, lang }) {
           </svg>
         );
       case "02": // sailboat stamp -> use image
-        return <img className="artifact__img" src="assets/sailboat-stamp.png" alt="" />;
+        return <img className="artifact__img" src={asset("assets/sailboat-stamp.png")} alt="" />;
       case "03": // shortwave map -> route lines
         return (
           <svg viewBox="0 0 60 40" className="artifact__glyph">
@@ -425,7 +453,7 @@ function Subscribe({ t, lang }) {
           ) : (
             <div className="subscribe__thanks">
               <div className="subscribe__stamp" aria-hidden="true">
-                <img src="assets/stamp-fenley.png" alt="" />
+                <img src={asset("assets/stamp-fenley.png")} alt="" />
               </div>
               <p className="subscribe__thanks-line">{t.subscribeThanks}</p>
             </div>
@@ -555,10 +583,22 @@ function Tweaks({ tweaks, setTweak }) {
 // ---------- App root ----------
 
 function App() {
-  const [tweaks, setTweaks] = useTweaks(DEFAULTS);
+  const [tweaks, setTweaks] = useTweaks({
+    ...DEFAULTS,
+    ...(INITIAL_LANG_FROM_URL ? { lang: INITIAL_LANG_FROM_URL } : {}),
+  });
   const setTweak = (k, v) => setTweaks({ [k]: v });
   const lang = tweaks.lang;
   const t = window.SW_CONTENT[lang];
+
+  const setLang = (newLang) => {
+    setTweak("lang", newLang);
+    try {
+      const newPath = SITE_BASE + newLang + "/";
+      const url = newPath + window.location.search + window.location.hash;
+      window.history.pushState({ lang: newLang }, "", url);
+    } catch {}
+  };
 
   // sync <html lang>
   useEffect(() => {
@@ -571,9 +611,19 @@ function App() {
     document.body.dataset.accent = tweaks.accent;
   }, [lang, tweaks.surface, tweaks.accent]);
 
+  // react to back/forward navigation between /ru, /en, and base
+  useEffect(() => {
+    const onPop = () => {
+      const { lang: l } = detectSiteAndLang();
+      if (l && l !== lang) setTweak("lang", l);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [lang]);
+
   return (
     <div className="site" data-lang={lang}>
-      <Header t={t} lang={lang} onLang={(v) => setTweak("lang", v)} />
+      <Header t={t} lang={lang} onLang={setLang} />
       <main>
         <Hero t={t} lang={lang} showMap={tweaks.showMap} />
         <Cards t={t} lang={lang} />

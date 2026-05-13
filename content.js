@@ -55,7 +55,7 @@ window.SW_CONTENT = {
     ],
 
     excerptKicker: "Фрагмент из черновика",
-    excerptHeading: "В витрине стояли два приёмника",
+    excerptHeading: "",
     excerptLines: [
       "Магазин стоял на Montague Street, в Бруклин-Хайтс. Над дверью — вывеска:",
       {
@@ -70,7 +70,7 @@ window.SW_CONTENT = {
       "Первый приёмник обещал музыку после ужина.",
       "Второй — чужие страны, если хватит терпения, и чужие континенты, если повезёт.",
     ],
-    excerptCaption: "Глава 1 · Бруклин, 1928",
+    excerptCaption: "Глава 2 · Бруклин, июль 1928",
     excerptCta: "Читать больше в Telegram",
 
     artifactsKicker: "Артефакты мира",
