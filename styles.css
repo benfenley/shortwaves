@@ -629,10 +629,10 @@ body[data-surface="night"] .excerpt__paper {
 }
 .excerpt__stampbox {
   position: absolute;
-  top: -22px;
-  right: 28px;
-  width: 84px;
-  height: 84px;
+  top: -28px;
+  right: 24px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   overflow: hidden;
   transform: rotate(8deg);
@@ -1256,5 +1256,5 @@ body[data-surface="night"] .site-footer { background: #0c0a07; }
   .vitrine { width: min(100%, 280px); }
   .hero__footer { font-size: 9.5px; flex-wrap: wrap; }
   .receiver__knobs { gap: 24px; }
-  .excerpt__stampbox { width: 64px; height: 64px; top: -16px; right: 14px; }
+  .excerpt__stampbox { width: 86px; height: 86px; top: -22px; right: 14px; }
 }

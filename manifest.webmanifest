@@ -1,0 +1,13 @@
+{
+  "name": "Короткие волны — Short Waves",
+  "short_name": "Short Waves",
+  "description": "A novel of radio, exile, and connection by Ben Fenley.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4ecd8",
+  "theme_color": "#3a2a5e",
+  "icons": [
+    { "src": "assets/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
