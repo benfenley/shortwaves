@@ -147,9 +147,9 @@ window.SW_CONTENT = {
     authorKicker: "Об авторе",
     authorName: "Бен Фенли",
     authorBody:
-      "Бен Фенли — псевдоним автора, который пишет историческую прозу о памяти, эмиграции, технологиях и сообществах поверх границ. «Короткие волны» — его первый роман из цикла «Пароль».",
+      "Бен Фенли — псевдоним автора, который пишет историческую прозу о памяти, эмиграции, технологиях и сообществах поверх границ. «Короткие волны» — первая книга цикла.",
     authorAside:
-      "Пишет на двух языках, читает на четырёх, по утрам пьёт чай в подстаканнике.",
+      "Пишет на двух языках, живет в трех странах, по утрам пьёт чай из стакана в подстаканнике.",
 
     footerLinks: [
       { label: "Telegram", href: "https://t.me/short_waves" },
@@ -298,9 +298,9 @@ window.SW_CONTENT = {
     authorKicker: "About the author",
     authorName: "Ben Fenley",
     authorBody:
-      "Ben Fenley writes historical fiction about memory, exile, technology, and the communities people build when old maps stop working. Short Waves is his first novel — book one of The Password Cycle.",
+      "Ben Fenley writes historical fiction about memory, exile, technology, and the communities people build when old maps stop working. Short Waves is his first novel — book one of a cycle.",
     authorAside:
-      "Writes in two languages, reads in four, takes his morning tea in a podstakannik.",
+      "Writes in two languages, lives in three countries, takes his morning tea in a podstakannik.",
 
     footerLinks: [
       { label: "Newsletter", href: "#subscribe" },
