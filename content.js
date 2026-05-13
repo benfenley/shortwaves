@@ -19,7 +19,7 @@ window.SW_CONTENT = {
     heroCtaPrimary: "Читать фрагмент",
     heroCtaSecondary: "Подписаться",
     heroCtaTertiary: "Telegram-канал",
-    heroMeta: ["Бен Г. Фенли", "1928 — 1932"],
+    heroMeta: ["Короткие волны", "1915 — 1929"],
     dial: ["25 м", "31 м", "40 м", "49 м"],
     handwritten: "слышно через океан",
 
@@ -134,7 +134,7 @@ window.SW_CONTENT = {
     tgBody:
       "Фрагменты черновика, заметки о радио и эмиграции, исторические детали, артефакты и иногда вопросы к читателям. На русском.",
     tgBtn: "Перейти в Telegram",
-    tgMeta: "@korotkievolny",
+    tgMeta: "@short_waves",
 
     authorKicker: "Об авторе",
     authorName: "Бен Фенли",
@@ -144,7 +144,7 @@ window.SW_CONTENT = {
       "Пишет на двух языках, читает на четырёх, по утрам пьёт чай в подстаканнике.",
 
     footerLinks: [
-      { label: "Telegram", href: "#" },
+      { label: "Telegram", href: "https://t.me/short_waves" },
       { label: "Newsletter", href: "#subscribe" },
       { label: "Threads", href: "#" },
       { label: "Email", href: "mailto:hello@benfenley.com" },
@@ -170,7 +170,7 @@ window.SW_CONTENT = {
     heroCtaPrimary: "Read an excerpt",
     heroCtaSecondary: "Subscribe",
     heroCtaTertiary: "Updates",
-    heroMeta: ["Ben G. Fenley", "1928 — 1932"],
+    heroMeta: ["Short Waves", "1915 — 1929"],
     dial: ["25 m", "31 m", "40 m", "49 m"],
     handwritten: "heard across the ocean",
 
@@ -285,7 +285,7 @@ window.SW_CONTENT = {
     tgBody:
       "Draft fragments, notes on radio and exile, historical detail, artifacts, and occasional questions for readers. Posted in Russian.",
     tgBtn: "Open Telegram",
-    tgMeta: "@korotkievolny",
+    tgMeta: "@short_waves",
 
     authorKicker: "About the author",
     authorName: "Ben Fenley",

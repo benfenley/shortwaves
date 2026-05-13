@@ -57,7 +57,7 @@ function RouteMap({ showLines = true }) {
     [0, 1], [1, 2], [2, 4], [4, 3], [1, 3], [0, 4],
   ];
   return (
-    <svg className="routemap" viewBox="0 0 100 80" preserveAspectRatio="none" aria-hidden="true">
+    <svg className="routemap" viewBox="0 0 100 80" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       {/* hairline grid */}
       <g stroke="currentColor" strokeWidth="0.08" opacity="0.35">
         {Array.from({ length: 11 }).map((_, i) => (
@@ -97,7 +97,7 @@ function Header({ t, lang, onLang, onNav }) {
     <header className="site-header" data-screen-label="00 Header">
       <div className="wrap header__inner">
         <a className="wordmark" href="#top" onClick={() => setOpen(false)}>
-          <span className="wordmark__name">Ben G. Fenley</span>
+          <span className="wordmark__name">Ben Fenley</span>
           <span className="wordmark__sep" aria-hidden="true">·</span>
           <span className="wordmark__alt">{lang === "ru" ? "Бен Фенли" : "author"}</span>
         </a>
@@ -148,7 +148,7 @@ function Hero({ t, lang, showMap }) {
             <span className="hero__title-line hero__title-line--alt">{t.heroTitle[1]}</span>
           </h1>
           <div className="hero__rule" aria-hidden="true">
-            <span></span><i>{lang === "ru" ? "Бен Г. Фенли" : "a novel by Ben G. Fenley"}</i><span></span>
+            <span></span><i>{lang === "ru" ? "Бен Фенли" : "a novel by Ben Fenley"}</i><span></span>
           </div>
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
@@ -427,7 +427,7 @@ function Telegram({ t, lang }) {
           </div>
           <h2 className="telegram__title">{t.tgTitle}</h2>
           <p className="telegram__body">{t.tgBody}</p>
-          <a className="btn btn--primary btn--on-dark" href="#">{t.tgBtn} →</a>
+          <a className="btn btn--primary btn--on-dark" href="https://t.me/short_waves" target="_blank" rel="noopener noreferrer">{t.tgBtn} →</a>
           <p className="telegram__meta">{t.tgMeta}</p>
         </div>
       </div>
@@ -460,7 +460,7 @@ function Footer({ t, lang }) {
         <div className="site-footer__top">
           <div className="site-footer__brand">
             <span className="site-footer__title">{lang === "ru" ? "Короткие волны" : "Short Waves"}</span>
-            <span className="site-footer__sub">Ben G. Fenley · benfenley.com</span>
+            <span className="site-footer__sub">Ben Fenley · benfenley.com</span>
           </div>
           <nav className="site-footer__links" aria-label="footer">
             {t.footerLinks.map((l, i) => <a href={l.href} key={i}>{l.label}</a>)}
