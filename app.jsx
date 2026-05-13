@@ -199,6 +199,11 @@ function About({ t }) {
 
 function Cards({ t, lang }) {
   const slotIds = ["card-radio", "card-exile", "card-connection"];
+  const slotSrcs = [
+    "assets/card-radio.jpg",
+    "assets/card-exile.jpg",
+    "assets/card-connection.jpg",
+  ];
   const slotHints = lang === "ru"
     ? ["иллюстрация: радио", "иллюстрация: эмиграция", "иллюстрация: связи"]
     : ["illustration: radio", "illustration: exile", "illustration: connection"];
@@ -216,6 +221,7 @@ function Cards({ t, lang }) {
                 <image-slot
                   id={slotIds[i]}
                   shape="rect"
+                  src={slotSrcs[i]}
                   placeholder={slotHints[i]}
                 ></image-slot>
               </div>
