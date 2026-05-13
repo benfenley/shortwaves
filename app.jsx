@@ -102,7 +102,9 @@ function Header({ t, lang, onLang, onNav }) {
           <span className="wordmark__alt">{lang === "ru" ? "Бен Фенли" : "author"}</span>
         </a>
         <nav className={"nav " + (open ? "is-open" : "")} aria-label="primary">
-          <a href="#excerpt" onClick={() => setOpen(false)}>{t.nav.excerpt}</a>
+          {lang === "ru" && (
+            <a href="#excerpt" onClick={() => setOpen(false)}>{t.nav.excerpt}</a>
+          )}
           <a href="#subscribe" onClick={() => setOpen(false)}>{t.nav.subscribe}</a>
           <a href="#author" onClick={() => setOpen(false)}>{t.nav.author}</a>
           <div className="lang" role="group" aria-label="language">
@@ -153,8 +155,10 @@ function Hero({ t, lang, showMap }) {
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
           <div className="hero__ctas">
-            <a className="btn btn--primary" href="#excerpt">{t.heroCtaPrimary}</a>
-            <a className="btn" href="#subscribe">{t.heroCtaSecondary}</a>
+            {lang === "ru" && (
+              <a className="btn btn--primary" href="#excerpt">{t.heroCtaPrimary}</a>
+            )}
+            <a className={"btn" + (lang === "ru" ? "" : " btn--primary")} href="#subscribe">{t.heroCtaSecondary}</a>
             {lang === "ru" && (
               <a className="btn btn--ghost" href="#telegram">{t.heroCtaTertiary} →</a>
             )}
@@ -243,6 +247,7 @@ function Cards({ t, lang }) {
 }
 
 function Excerpt({ t, lang }) {
+  if (lang !== "ru") return null;
   return (
     <section className="excerpt" id="excerpt" data-screen-label="04 Excerpt">
       <div className="wrap excerpt__inner">
@@ -257,16 +262,27 @@ function Excerpt({ t, lang }) {
           </div>
           <p className="excerpt__heading">{t.excerptHeading}</p>
           <div className="excerpt__body">
-            {t.excerptLines.map((line, i) => (
-              <p className={"excerpt__line " + (i === 0 ? "is-dropcap" : "")} key={i}>{line}</p>
-            ))}
+            {t.excerptLines.map((item, i) => {
+              if (typeof item === "string") {
+                return <p className={"excerpt__line " + (i === 0 ? "is-dropcap" : "")} key={i}>{item}</p>;
+              }
+              if (item.kind === "sign") {
+                return (
+                  <div className="excerpt__sign" key={i} aria-label="shop sign">
+                    <span className="excerpt__sign-title">{item.title}</span>
+                    <span className="excerpt__sign-sub">{item.subtitle}</span>
+                  </div>
+                );
+              }
+              return null;
+            })}
           </div>
           <div className="excerpt__caption">
             <span>{t.excerptCaption}</span>
             <span className="excerpt__page">— 47 —</span>
           </div>
         </div>
-        <a className="btn btn--primary" href={lang === "ru" ? "#telegram" : "#subscribe"}>{t.excerptCta} →</a>
+        <a className="btn btn--primary" href="#telegram">{t.excerptCta} →</a>
       </div>
     </section>
   );
@@ -469,7 +485,12 @@ function Footer({ t, lang }) {
             <span className="site-footer__sub">Ben Fenley · benfenley.com</span>
           </div>
           <nav className="site-footer__links" aria-label="footer">
-            {t.footerLinks.map((l, i) => <a href={l.href} key={i}>{l.label}</a>)}
+            {t.footerLinks.map((l, i) => {
+              const ext = /^https?:/.test(l.href);
+              return (
+                <a href={l.href} key={i} {...(ext && { target: "_blank", rel: "noopener noreferrer" })}>{l.label}</a>
+              );
+            })}
           </nav>
         </div>
         <div className="site-footer__rule" aria-hidden="true"></div>

@@ -677,6 +677,33 @@ body[data-surface="night"] .excerpt__stampbox { mix-blend-mode: screen; opacity:
   color: inherit;
   font-weight: inherit;
 }
+.excerpt__sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-indent: 0;
+  margin: 22px auto 26px;
+  padding: 14px 22px;
+  max-width: 320px;
+  border: 1px solid var(--paper-edge, var(--rule));
+  background: rgba(0, 0, 0, 0.03);
+  font-family: var(--serif, "EB Garamond", serif);
+  text-align: center;
+}
+.excerpt__sign-title {
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  font-size: clamp(14px, 1.2vw, 17px);
+  color: var(--ink);
+}
+.excerpt__sign-sub {
+  font-style: italic;
+  letter-spacing: 0.06em;
+  font-size: clamp(11px, 0.95vw, 13px);
+  color: var(--ink-soft, var(--ink-mute, var(--ink)));
+}
+
 .excerpt__caption {
   margin-top: 22px;
   padding-top: 14px;
