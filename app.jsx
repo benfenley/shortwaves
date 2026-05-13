@@ -204,11 +204,11 @@ function Hero({ t, lang, showMap }) {
         </aside>
       </div>
       <div className="hero__footer wrap" aria-hidden="true">
-        <span>N 59° 56′ 19″</span>
+        <span>N 51° 29′ 47″</span>
         <span className="hero__footer-sep"></span>
         <span>{lang === "ru" ? "Эфирный шум · 1929" : "Atmospheric noise · 1929"}</span>
         <span className="hero__footer-sep"></span>
-        <span>E 30° 18′ 50″</span>
+        <span>W 0° 12′ 35″</span>
       </div>
     </section>
   );
