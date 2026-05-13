@@ -146,7 +146,7 @@ window.SW_CONTENT = {
     footerLinks: [
       { label: "Telegram", href: "https://t.me/short_waves" },
       { label: "Newsletter", href: "#subscribe" },
-      { label: "Threads", href: "#" },
+      { label: "Threads", href: "https://www.threads.com/@ben.fenley" },
       { label: "Email", href: "mailto:hello@benfenley.com" },
     ],
     footerNote: "© Ben G. Fenley, 2026. All rights reserved.",
@@ -296,7 +296,7 @@ window.SW_CONTENT = {
 
     footerLinks: [
       { label: "Newsletter", href: "#subscribe" },
-      { label: "Threads", href: "#" },
+      { label: "Threads", href: "https://www.threads.com/@ben.fenley" },
       { label: "Email", href: "mailto:hello@benfenley.com" },
     ],
     footerNote: "© Ben G. Fenley, 2026. All rights reserved.",
