@@ -71,7 +71,7 @@ window.SW_CONTENT = {
       "Второй — чужие страны, если хватит терпения, и чужие континенты, если повезёт.",
     ],
     excerptCaption: "Глава 2 · Бруклин, июль 1929",
-    excerptCta: "Читать больше в Telegram",
+    excerptCta: "Читать больше в Substack",
 
     artifactsKicker: "Артефакты мира",
     artifactsLead:
