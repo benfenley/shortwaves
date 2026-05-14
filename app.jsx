@@ -417,16 +417,18 @@ function Artifacts({ t, lang }) {
   );
 }
 
-const SUBSCRIBE_FORM_ACTION = "https://benfenley.substack.com/subscribe";
+const SUBSCRIBE_FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScgK8ocZQGYbPJTdWAQNtBgCQP3SvIore3aVuvCNtzBNYIvgw/formResponse";
+const SUBSCRIBE_FORM_EMAIL_FIELD = "entry.576959582";
 
 function Subscribe({ t, lang }) {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const submit = (e) => {
-    if (!email || !/.+@.+\..+/.test(email)) {
-      e.preventDefault();
-      return;
-    }
+    e.preventDefault();
+    if (!email || !/.+@.+\..+/.test(email)) return;
+    const body = new FormData();
+    body.append(SUBSCRIBE_FORM_EMAIL_FIELD, email);
+    fetch(SUBSCRIBE_FORM_ACTION, { method: "POST", mode: "no-cors", body }).catch(() => {});
     setDone(true);
   };
   return (
@@ -440,17 +442,10 @@ function Subscribe({ t, lang }) {
         <p className="subscribe__body">{t.subscribeBody}</p>
         <div className="subscribe__card">
           {!done ? (
-            <form
-              className="subscribe__form"
-              action={SUBSCRIBE_FORM_ACTION}
-              method="GET"
-              target="_blank"
-              rel="noopener noreferrer"
-              onSubmit={submit}
-            >
+            <form className="subscribe__form" onSubmit={submit}>
               <label className="field">
                 <span>{t.subscribeEmail}</span>
-                <input type="email" name="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@somewhere.com" />
+                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@somewhere.com" />
               </label>
               <button className="btn btn--primary" type="submit">{t.subscribeBtn}</button>
             </form>
