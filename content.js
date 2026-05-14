@@ -134,7 +134,7 @@ window.SW_CONTENT = {
     subscribeName: "Имя (необязательно)",
     subscribeEmail: "email",
     subscribeBtn: "Подписаться",
-    subscribeThanks: "Спасибо. Первый сигнал принят.",
+    subscribeThanks: "Подтвердите подписку в открывшейся вкладке Substack.",
     subscribeFootnote: "Можно отписаться в любой момент. Адрес не передаётся никому.",
 
     tgKicker: "Telegram",
@@ -285,7 +285,7 @@ window.SW_CONTENT = {
     subscribeName: "Name (optional)",
     subscribeEmail: "email",
     subscribeBtn: "Subscribe",
-    subscribeThanks: "Thank you. First signal received.",
+    subscribeThanks: "Confirm your subscription in the Substack tab that just opened.",
     subscribeFootnote: "Unsubscribe any time. Your address is never shared.",
 
     tgKicker: "Telegram",

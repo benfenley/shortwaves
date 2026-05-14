@@ -417,7 +417,7 @@ function Artifacts({ t, lang }) {
   );
 }
 
-const SUBSCRIBE_FORM_ACTION = "https://benfenley.substack.com/api/v1/free";
+const SUBSCRIBE_FORM_ACTION = "https://benfenley.substack.com/subscribe";
 
 function Subscribe({ t, lang }) {
   const [email, setEmail] = useState("");
@@ -439,18 +439,15 @@ function Subscribe({ t, lang }) {
         <h2 className="subscribe__title">{t.subscribeTitle}</h2>
         <p className="subscribe__body">{t.subscribeBody}</p>
         <div className="subscribe__card">
-          <iframe name="sw-subscribe-sink" title="" aria-hidden="true" tabIndex={-1} style={{ display: "none" }}></iframe>
           {!done ? (
             <form
               className="subscribe__form"
               action={SUBSCRIBE_FORM_ACTION}
-              method="POST"
-              target="sw-subscribe-sink"
+              method="GET"
+              target="_blank"
+              rel="noopener noreferrer"
               onSubmit={submit}
             >
-              <input type="hidden" name="first_url" value="https://benfenley.com/" />
-              <input type="hidden" name="current_url" value="https://benfenley.com/" />
-              <input type="hidden" name="source" value="subscribe_page" />
               <label className="field">
                 <span>{t.subscribeEmail}</span>
                 <input type="email" name="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@somewhere.com" />
