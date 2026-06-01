@@ -183,10 +183,9 @@ function Hero({ t, lang, showMap }) {
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
           <div className="hero__ctas">
-            {lang === "ru" && (
-              <a className="btn btn--primary" href="#excerpt">{t.heroCtaPrimary}</a>
-            )}
-            <a className={"btn" + (lang === "ru" ? "" : " btn--primary")} href="#subscribe">{t.heroCtaSecondary}</a>
+            <a className="btn btn--primary" href="https://www.litres.ru/73979788/" target="_blank" rel="noopener noreferrer">{t.heroCtaBuy}</a>
+            <a className="btn" href="https://benfenley.substack.com/" target="_blank" rel="noopener noreferrer">{t.heroCtaPrimary}</a>
+            <a className="btn" href="#subscribe">{t.heroCtaSecondary}</a>
             {lang === "ru" && (
               <a className="btn btn--ghost" href="#telegram">{t.heroCtaTertiary} →</a>
             )}
@@ -196,7 +195,7 @@ function Hero({ t, lang, showMap }) {
         <aside className="hero__vitrine" aria-label="book cover">
           <div className="vitrine">
             <div className="vitrine__shadow" aria-hidden="true"></div>
-            <img className="vitrine__cover" src={asset("assets/cover.png")} alt={lang === "ru" ? "Обложка «Короткие волны»" : "Short Waves cover"} />
+            <img className="vitrine__cover" src={asset(lang === "ru" ? "assets/cover-ru.jpg" : "assets/cover-en.jpg")} alt={lang === "ru" ? "Обложка «Короткие волны»" : "Short Waves cover"} />
           </div>
           <ul className="hero__meta">
             {t.heroMeta.map((m, i) => <li key={i}>{m}</li>)}

@@ -16,7 +16,8 @@ window.SW_CONTENT = {
       "Роман о радио, эмиграции и связях, которые проходят через шум, расстояния и время.",
     heroLede:
       "Одесса, Бруклин, Ленинград, Лондон. Конец 1920-х. Люди, разбросанные историей, пытаются услышать друг друга — через эфир, границы, старые обещания и новые маршруты.",
-    heroCtaPrimary: "Читать фрагмент",
+    heroCtaPrimary: "Читать в Substack",
+    heroCtaBuy: "Купить на Литрес",
     heroCtaSecondary: "Подписаться",
     heroCtaTertiary: "Telegram-канал",
     heroMeta: ["Короткие волны", "1915 — 1929"],
@@ -68,7 +69,7 @@ window.SW_CONTENT = {
       "— Это плохо?",
       "— Это честно. Они строят страну как фабрику. Или фабрику как страну — я пока не понял.",
     ],
-    excerptCaption: "Глава 2 · Бруклин, июль 1929",
+    excerptCaption: "Глава 5 · Атлантический океан, август 1929",
     excerptCta: "Читать больше в Substack",
 
     artifactsKicker: "Артефакты мира",
@@ -174,7 +175,8 @@ window.SW_CONTENT = {
       "A historical novel of radio, exile, and friendship across borders.",
     heroLede:
       "Odessa, Brooklyn, Soviet Leningrad, London. The late 1920s. People scattered by history try to hear one another through static, borders, old promises, and new routes.",
-    heroCtaPrimary: "Read an excerpt",
+    heroCtaPrimary: "Read on Substack",
+    heroCtaBuy: "Buy on Litres",
     heroCtaSecondary: "Subscribe",
     heroCtaTertiary: "Updates",
     heroMeta: ["Short Waves", "1915 — 1929"],
