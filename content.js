@@ -304,7 +304,6 @@ window.SW_CONTENT = {
       "Writes in two languages, lives in three countries, takes his morning tea in a podstakannik.",
 
     footerLinks: [
-      { label: "Litres", href: "https://www.litres.ru/73979788/" },
       { label: "Newsletter", href: "#subscribe" },
       { label: "Threads", href: "https://www.threads.com/@ben.fenley" },
       { label: "Email", href: "mailto:hello@benfenley.com" },
