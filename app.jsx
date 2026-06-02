@@ -183,15 +183,15 @@ function Hero({ t, lang, showMap }) {
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
           <div className="hero__ctas">
-            {lang === "ru" && (
-              <a className="btn btn--primary" href="https://www.litres.ru/73979788/" target="_blank" rel="noopener noreferrer">{t.heroCtaBuy}</a>
-            )}
             <a
-              className={"btn" + (lang === "ru" ? "" : " btn--primary")}
+              className="btn btn--primary"
               href={lang === "ru" ? "https://benfenley.substack.com/" : "https://shortwaves.substack.com/p/chapter-1"}
               target="_blank"
               rel="noopener noreferrer"
             >{t.heroCtaPrimary}</a>
+            {lang === "ru" && (
+              <a className="btn" href="https://www.litres.ru/73979788/" target="_blank" rel="noopener noreferrer">{t.heroCtaBuy}</a>
+            )}
             <a className="btn" href="#subscribe">{t.heroCtaSecondary}</a>
             {lang === "ru" && (
               <a className="btn btn--ghost" href="#telegram">{t.heroCtaTertiary} →</a>
