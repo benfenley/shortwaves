@@ -1285,3 +1285,119 @@ body[data-surface="night"] .site-footer { background: #0c0a07; }
   .receiver__knobs { gap: 24px; }
   .excerpt__stampbox { width: 86px; height: 86px; top: -22px; right: 14px; }
 }
+
+/* ===== Chapter page (/ru/N/) ===== */
+.chapter {
+  padding-top: clamp(20px, 4vw, 48px);
+  padding-bottom: clamp(40px, 6vw, 72px);
+}
+.chapter__inner {
+  max-width: 680px;
+}
+.chapter__topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.chapter__topnav a { color: var(--accent); text-decoration: none; }
+.chapter__topnav a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+.chapter__topnav-meta { color: var(--ink-mute); }
+
+.chapter__head {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 18px;
+  margin-bottom: clamp(24px, 3vw, 36px);
+  text-align: center;
+}
+.chapter__num {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: 0.01em;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+.chapter__loc {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0;
+}
+
+.chapter__body {
+  font-family: var(--serif);
+  font-size: clamp(17px, 1.3vw, 19px);
+  line-height: 1.7;
+  color: var(--ink);
+}
+.chapter__line {
+  margin: 0 0 1em;
+  text-indent: 1.6em;
+  hyphens: auto;
+}
+.chapter__line:first-child { text-indent: 0; }
+.chapter__line:first-child::first-letter {
+  font-family: var(--serif);
+  font-size: 2.6em;
+  font-weight: 600;
+  float: left;
+  line-height: 0.95;
+  margin: 0.08em 0.08em 0 0;
+  color: var(--accent);
+}
+
+.chapter__sep {
+  text-align: center;
+  margin: 28px 0;
+  color: var(--accent-soft, var(--accent));
+  font-size: 18px;
+  letter-spacing: 0.6em;
+  user-select: none;
+}
+
+.chapter__cta {
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+.chapter__cta-next {
+  display: inline-block;
+  margin-bottom: 26px;
+  min-width: 220px;
+}
+.chapter__cta-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.chapter__cta-list a {
+  display: block;
+  text-align: center;
+}
+
+.chapter__missing {
+  font-family: var(--serif);
+  font-size: 20px;
+  text-align: center;
+  padding: 60px 0 30px;
+}
+
+@media (max-width: 640px) {
+  .chapter__topnav { font-size: 11px; }
+  .chapter__num { font-size: 28px; }
+}

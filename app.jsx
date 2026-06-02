@@ -13,22 +13,32 @@ const { useState, useEffect, useRef } = React;
 function detectSiteAndLang() {
   let base = "/";
   let lang = null;
+  let chapter = null;
   try {
     const path = window.location.pathname;
-    const m = path.match(/^(.*?)\/(ru|en)\/?$/);
-    if (m) {
-      base = (m[1] || "") + "/";
-      lang = m[2];
+    // /ru/N/ or /en/N/ — chapter page
+    const cm = path.match(/^(.*?)\/(ru|en)\/(\d+)\/?$/);
+    if (cm) {
+      base = (cm[1] || "") + "/";
+      lang = cm[2];
+      chapter = parseInt(cm[3], 10);
     } else {
-      base = path.endsWith("/") ? path : path.replace(/[^/]*$/, "");
-      if (!base) base = "/";
-      const q = new URLSearchParams(window.location.search).get("lang");
-      if (q === "ru" || q === "en") lang = q;
+      // /ru/ or /en/ — language home
+      const m = path.match(/^(.*?)\/(ru|en)\/?$/);
+      if (m) {
+        base = (m[1] || "") + "/";
+        lang = m[2];
+      } else {
+        base = path.endsWith("/") ? path : path.replace(/[^/]*$/, "");
+        if (!base) base = "/";
+        const q = new URLSearchParams(window.location.search).get("lang");
+        if (q === "ru" || q === "en") lang = q;
+      }
     }
   } catch {}
-  return { base, lang };
+  return { base, lang, chapter };
 }
-const { base: SITE_BASE, lang: INITIAL_LANG_FROM_URL } = detectSiteAndLang();
+const { base: SITE_BASE, lang: INITIAL_LANG_FROM_URL, chapter: INITIAL_CHAPTER } = detectSiteAndLang();
 const asset = (p) => SITE_BASE + p.replace(/^\//, "");
 
 // ---------- small decorative primitives ----------
@@ -183,18 +193,21 @@ function Hero({ t, lang, showMap }) {
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
           <div className="hero__ctas">
-            <a
-              className="btn btn--primary"
-              href={lang === "ru" ? "https://benfenley.substack.com/" : "https://shortwaves.substack.com/p/chapter-1"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >{t.heroCtaPrimary}</a>
-            {lang === "ru" && (
-              <a className="btn" href="https://www.litres.ru/73979788/" target="_blank" rel="noopener noreferrer">{t.heroCtaBuy}</a>
-            )}
-            <a className="btn" href="#subscribe">{t.heroCtaSecondary}</a>
-            {lang === "ru" && (
-              <a className="btn btn--ghost" href="#telegram">{t.heroCtaTertiary} →</a>
+            {lang === "ru" ? (
+              <>
+                <a className="btn btn--primary" href={SITE_BASE + "ru/1/"}>{t.heroCtaPrimary}</a>
+                <a className="btn btn--ghost" href="#telegram">{t.heroCtaTertiary} →</a>
+              </>
+            ) : (
+              <>
+                <a
+                  className="btn btn--primary"
+                  href="https://shortwaves.substack.com/p/chapter-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{t.heroCtaPrimary}</a>
+                <a className="btn" href="#subscribe">{t.heroCtaSecondary}</a>
+              </>
             )}
           </div>
           <DialTicks labels={t.dial} />
@@ -508,6 +521,70 @@ function Author({ t, lang }) {
   );
 }
 
+// ---------- Chapter page (RU only, paths like /ru/1/, /ru/2/, /ru/3/) ----------
+
+const CHAPTER_CTAS = [
+  { label: "Продолжить на Author.Today", href: "https://author.today/work/596267" },
+  { label: "Читать на Литрес",           href: "https://www.litres.ru/73979788/" },
+  { label: "Читать на Substack",         href: "https://benfenley.substack.com/" },
+  { label: "Подписаться в Telegram",     href: "https://t.me/short_waves" },
+];
+
+function ChapterPage({ num }) {
+  const list = (window.SW_CHAPTERS && window.SW_CHAPTERS.ru) || [];
+  const ch = list.find(c => c.num === num);
+  const total = list.length;
+  if (!ch) {
+    return (
+      <main className="chapter">
+        <div className="wrap">
+          <p className="chapter__missing">Глава не найдена.</p>
+          <p><a className="btn" href={SITE_BASE + "ru/"}>← На главную</a></p>
+        </div>
+      </main>
+    );
+  }
+  const hasNext = num < total;
+  return (
+    <main className="chapter">
+      <div className="wrap chapter__inner">
+        <div className="chapter__topnav">
+          <a href={SITE_BASE + "ru/"}>← На главную</a>
+          <span className="chapter__topnav-meta">{`Глава ${num} из ${total}`}</span>
+        </div>
+        <header className="chapter__head">
+          <h1 className="chapter__num">{ch.title}</h1>
+          <p className="chapter__loc">{ch.subtitle}</p>
+        </header>
+        <div className="chapter__body">
+          {ch.scenes.map((scene, si) => (
+            <React.Fragment key={si}>
+              {si > 0 && <div className="chapter__sep" aria-hidden="true">⁂</div>}
+              {scene.map((para, pi) => (
+                <p className="chapter__line" key={pi}>{para}</p>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <nav className="chapter__cta" aria-label="продолжение">
+          {hasNext && (
+            <a className="btn btn--primary chapter__cta-next" href={SITE_BASE + "ru/" + (num + 1) + "/"}>
+              Глава {num + 1} →
+            </a>
+          )}
+          <ul className="chapter__cta-list">
+            {CHAPTER_CTAS.map((c, i) => (
+              <li key={i}>
+                <a className="btn" href={c.href} target="_blank" rel="noopener noreferrer">{c.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </main>
+  );
+}
+
 function Footer({ t, lang }) {
   return (
     <footer className="site-footer" data-screen-label="09 Footer">
@@ -608,10 +685,13 @@ function App() {
   // sync <html lang>
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title =
-      lang === "ru"
-        ? "Короткие волны — роман Бена Фенли"
-        : "Short Waves — a novel by Ben Fenley";
+    const chList = window.SW_CHAPTERS && window.SW_CHAPTERS.ru;
+    const ch = INITIAL_CHAPTER !== null && lang === "ru" && chList
+      ? chList.find(c => c.num === INITIAL_CHAPTER)
+      : null;
+    document.title = ch
+      ? `${ch.title} — Короткие волны`
+      : (lang === "ru" ? "Короткие волны — роман Бена Фенли" : "Short Waves — a novel by Ben Fenley");
     document.body.dataset.surface = tweaks.surface;
     document.body.dataset.accent = tweaks.accent;
   }, [lang, tweaks.surface, tweaks.accent]);
@@ -626,17 +706,23 @@ function App() {
     return () => window.removeEventListener("popstate", onPop);
   }, [lang]);
 
+  const isChapter = INITIAL_CHAPTER !== null && lang === "ru";
+
   return (
-    <div className="site" data-lang={lang}>
+    <div className="site" data-lang={lang} data-route={isChapter ? "chapter" : "home"}>
       <Header t={t} lang={lang} onLang={setLang} />
-      <main>
-        <Hero t={t} lang={lang} showMap={tweaks.showMap} />
-        <Cards t={t} lang={lang} />
-        <Excerpt t={t} lang={lang} />
-        <Subscribe t={t} lang={lang} />
-        <Telegram t={t} lang={lang} />
-        <Author t={t} lang={lang} />
-      </main>
+      {isChapter ? (
+        <ChapterPage num={INITIAL_CHAPTER} />
+      ) : (
+        <main>
+          <Hero t={t} lang={lang} showMap={tweaks.showMap} />
+          <Cards t={t} lang={lang} />
+          <Excerpt t={t} lang={lang} />
+          <Subscribe t={t} lang={lang} />
+          <Telegram t={t} lang={lang} />
+          <Author t={t} lang={lang} />
+        </main>
+      )}
       <Footer t={t} lang={lang} />
       <Tweaks tweaks={tweaks} setTweak={setTweak} />
     </div>
