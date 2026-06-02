@@ -343,8 +343,16 @@ img { max-width: 100%; display: block; }
   font-size: 15.5px;
   line-height: 1.6;
   color: var(--ink-soft);
-  margin: 0 0 22px;
+  margin: 0 0 14px;
   max-width: 520px;
+}
+.hero__cities {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 22px;
 }
 .hero__ctas {
   display: flex;

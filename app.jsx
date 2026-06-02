@@ -197,6 +197,7 @@ function Hero({ t, lang, showMap }) {
           </div>
           <p className="hero__sub">{t.heroSubtitle}</p>
           <p className="hero__lede">{t.heroLede}</p>
+          {t.heroCities && <p className="hero__cities">{t.heroCities}</p>}
           <div className="hero__ctas">
             {lang === "ru" ? (
               <>
@@ -304,7 +305,7 @@ function Excerpt({ t, lang }) {
     <section className="excerpt" id="excerpt" data-screen-label="04 Excerpt">
       <div className="wrap excerpt__inner">
         <div className="kicker">
-          <span className="kicker__num">§ 02</span>
+          <span className="kicker__num">§ 01</span>
           <span className="kicker__txt">{t.excerptKicker}</span>
         </div>
         <div className="excerpt__paper">
@@ -334,7 +335,7 @@ function Excerpt({ t, lang }) {
             <span className="excerpt__page">— 47 —</span>
           </div>
         </div>
-        <a className="btn btn--primary" href="https://benfenley.substack.com/" target="_blank" rel="noopener noreferrer">{t.excerptCta} →</a>
+        <a className="btn btn--primary" href={SITE_BASE + "ru/1/"}>{t.excerptCta} →</a>
       </div>
     </section>
   );
@@ -459,7 +460,7 @@ function Subscribe({ t, lang }) {
     <section className="subscribe" id="subscribe" data-screen-label="06 Subscribe">
       <div className="wrap subscribe__inner">
         <div className="kicker">
-          <span className="kicker__num">§ 03</span>
+          <span className="kicker__num">§ 02</span>
           <span className="kicker__txt">{t.subscribeKicker}</span>
         </div>
         <h2 className="subscribe__title">{t.subscribeTitle}</h2>
@@ -495,7 +496,7 @@ function Telegram({ t, lang }) {
       <div className="wrap telegram__inner">
         <div className="telegram__left">
           <div className="kicker kicker--alt">
-            <span className="kicker__num">§ 04</span>
+            <span className="kicker__num">§ 03</span>
             <span className="kicker__txt">{t.tgKicker}</span>
           </div>
           <h2 className="telegram__title">{t.tgTitle}</h2>
@@ -514,7 +515,7 @@ function Author({ t, lang }) {
       <div className="wrap author__inner">
         <div className="author__left">
           <div className="kicker">
-            <span className="kicker__num">{lang === "ru" ? "§ 05" : "§ 04"}</span>
+            <span className="kicker__num">{lang === "ru" ? "§ 04" : "§ 03"}</span>
             <span className="kicker__txt">{t.authorKicker}</span>
           </div>
           <h2 className="author__name">{t.authorName}</h2>
@@ -721,7 +722,6 @@ function App() {
       ) : (
         <main>
           <Hero t={t} lang={lang} showMap={tweaks.showMap} />
-          <Cards t={t} lang={lang} />
           <Excerpt t={t} lang={lang} />
           <Subscribe t={t} lang={lang} />
           <Telegram t={t} lang={lang} />
