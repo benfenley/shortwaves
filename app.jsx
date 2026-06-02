@@ -129,44 +129,49 @@ function RouteMap({ showLines = true }) {
 
 // ---------- sections ----------
 
-function Header({ t, lang, onLang, onNav }) {
+function Header({ t, lang, onLang, onNav, minimal = false }) {
   const [open, setOpen] = useState(false);
+  const homeHref = minimal ? (SITE_BASE + lang + "/") : "#top";
   return (
     <header className="site-header" data-screen-label="00 Header">
       <div className="wrap header__inner">
-        <a className="wordmark" href="#top" onClick={() => setOpen(false)}>
+        <a className="wordmark" href={homeHref} onClick={() => setOpen(false)}>
           <span className="wordmark__name">Ben Fenley</span>
           <span className="wordmark__sep" aria-hidden="true">·</span>
           <span className="wordmark__alt">{lang === "ru" ? "Бен Фенли" : "author"}</span>
         </a>
-        <nav className={"nav " + (open ? "is-open" : "")} aria-label="primary">
-          {lang === "ru" && (
-            <a href="#excerpt" onClick={() => setOpen(false)}>{t.nav.excerpt}</a>
-          )}
-          <a href="#subscribe" onClick={() => setOpen(false)}>{t.nav.subscribe}</a>
-          <a href="#author" onClick={() => setOpen(false)}>{t.nav.author}</a>
-          <div className="lang" role="group" aria-label="language">
+        {!minimal && (
+          <>
+            <nav className={"nav " + (open ? "is-open" : "")} aria-label="primary">
+              {lang === "ru" && (
+                <a href="#excerpt" onClick={() => setOpen(false)}>{t.nav.excerpt}</a>
+              )}
+              <a href="#subscribe" onClick={() => setOpen(false)}>{t.nav.subscribe}</a>
+              <a href="#author" onClick={() => setOpen(false)}>{t.nav.author}</a>
+              <div className="lang" role="group" aria-label="language">
+                <button
+                  className={lang === "ru" ? "is-active" : ""}
+                  onClick={() => onLang("ru")}
+                  aria-pressed={lang === "ru"}
+                >RU</button>
+                <span aria-hidden="true">|</span>
+                <button
+                  className={lang === "en" ? "is-active" : ""}
+                  onClick={() => onLang("en")}
+                  aria-pressed={lang === "en"}
+                >EN</button>
+              </div>
+            </nav>
             <button
-              className={lang === "ru" ? "is-active" : ""}
-              onClick={() => onLang("ru")}
-              aria-pressed={lang === "ru"}
-            >RU</button>
-            <span aria-hidden="true">|</span>
-            <button
-              className={lang === "en" ? "is-active" : ""}
-              onClick={() => onLang("en")}
-              aria-pressed={lang === "en"}
-            >EN</button>
-          </div>
-        </nav>
-        <button
-          className={"burger " + (open ? "is-open" : "")}
-          onClick={() => setOpen(o => !o)}
-          aria-label="menu"
-          aria-expanded={open}
-        >
-          <span></span><span></span><span></span>
-        </button>
+              className={"burger " + (open ? "is-open" : "")}
+              onClick={() => setOpen(o => !o)}
+              aria-label="menu"
+              aria-expanded={open}
+            >
+              <span></span><span></span><span></span>
+            </button>
+          </>
+        )}
       </div>
     </header>
   );
@@ -710,7 +715,7 @@ function App() {
 
   return (
     <div className="site" data-lang={lang} data-route={isChapter ? "chapter" : "home"}>
-      <Header t={t} lang={lang} onLang={setLang} />
+      <Header t={t} lang={lang} onLang={setLang} minimal={isChapter} />
       {isChapter ? (
         <ChapterPage num={INITIAL_CHAPTER} />
       ) : (
