@@ -14,7 +14,7 @@
  *     in the EU. We only load it after a "granted" decision. Visitors who
  *     decline never get Pixel.
  *
- *   - Outbound clicks (substack/litres/author.today/telegram) are mirrored
+ *   - Outbound clicks (substack/litres/telegram) are mirrored
  *     to both fbq trackCustom and gtag('event','outbound_click', …).
  */
 (function () {
@@ -99,7 +99,6 @@
       var provider = null;
       if (/substack\.com/i.test(href)) provider = 'substack';
       else if (/litres\.ru/i.test(href)) provider = 'litres';
-      else if (/author\.today/i.test(href)) provider = 'author_today';
       else if (/(^|\/\/)t\.me\//i.test(href) || /telegram\.me/i.test(href)) provider = 'telegram';
       if (!provider) return;
       var pixelName = 'Click' + provider.split('_').map(function (s) {

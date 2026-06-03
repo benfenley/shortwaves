@@ -550,10 +550,9 @@ function readChapterSize() {
 }
 
 const CHAPTER_CTAS = [
-  { label: "Продолжить на Author.Today", href: "https://author.today/work/596267" },
-  { label: "Читать на Литрес",           href: "https://www.litres.ru/73979788/" },
-  { label: "Читать на Substack",         href: "https://benfenley.substack.com/" },
-  { label: "Подписаться в Telegram",     href: "https://t.me/short_waves" },
+  { label: "Читать на Литрес",       href: "https://www.litres.ru/73979788/" },
+  { label: "Читать на Substack",     href: "https://benfenley.substack.com/" },
+  { label: "Подписаться в Telegram", href: "https://t.me/short_waves" },
 ];
 
 function ChapterPage({ num }) {
