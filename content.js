@@ -153,6 +153,7 @@ window.SW_CONTENT = {
 
     footerLinks: [
       { label: "Литрес", href: "https://www.litres.ru/73979788/" },
+      { label: "Substack", href: "https://benfenley.substack.com/" },
       { label: "Telegram", href: "https://t.me/short_waves" },
       { label: "Newsletter", href: "#subscribe" },
       { label: "Threads", href: "https://www.threads.com/@ben.fenley" },
@@ -305,6 +306,7 @@ window.SW_CONTENT = {
       "Writes in two languages, lives in three countries, takes his morning tea in a podstakannik.",
 
     footerLinks: [
+      { label: "Substack", href: "https://shortwaves.substack.com/" },
       { label: "Newsletter", href: "#subscribe" },
       { label: "Threads", href: "https://www.threads.com/@ben.fenley" },
       { label: "Email", href: "mailto:hello@benfenley.com" },
