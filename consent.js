@@ -15,6 +15,7 @@
  */
 (function () {
   var PIXEL_ID = '1323897889151084';
+  var GA_ID = 'G-40QGHVQLRK';
   var STORAGE_KEY = 'sw_consent_pixel';
 
   function getStored() {
@@ -53,20 +54,44 @@
     window.fbq('track', 'PageView');
   }
 
+  function initGA() {
+    if (window.__swGAInited) return;
+    window.__swGAInited = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  function loadTrackers() {
+    initPixel();
+    initGA();
+  }
+
   // Outbound-click tracking — attaches regardless of consent state; only
-  // fires fbq if it's actually loaded.
+  // fires events if the trackers are actually loaded.
   function attachClickTracking() {
     document.addEventListener('click', function (e) {
       var a = e.target && e.target.closest && e.target.closest('a[href]');
-      if (!a || !window.fbq) return;
+      if (!a) return;
       var href = a.getAttribute('href') || '';
-      var name = null;
-      if (/substack\.com/i.test(href)) name = 'ClickSubstack';
-      else if (/litres\.ru/i.test(href)) name = 'ClickLitres';
-      else if (/author\.today/i.test(href)) name = 'ClickAuthorToday';
-      else if (/(^|\/\/)t\.me\//i.test(href) || /telegram\.me/i.test(href)) name = 'ClickTelegram';
-      if (name) {
-        try { window.fbq('trackCustom', name, { href: href }); } catch (err) {}
+      var provider = null;
+      if (/substack\.com/i.test(href)) provider = 'substack';
+      else if (/litres\.ru/i.test(href)) provider = 'litres';
+      else if (/author\.today/i.test(href)) provider = 'author_today';
+      else if (/(^|\/\/)t\.me\//i.test(href) || /telegram\.me/i.test(href)) provider = 'telegram';
+      if (!provider) return;
+      var pixelName = 'Click' + provider.split('_').map(function (s) { return s[0].toUpperCase() + s.slice(1); }).join('');
+      if (window.fbq) {
+        try { window.fbq('trackCustom', pixelName, { href: href }); } catch (err) {}
+      }
+      if (window.gtag) {
+        try { window.gtag('event', 'outbound_click', { provider: provider, href: href }); } catch (err) {}
       }
     }, true);
   }
@@ -103,7 +128,7 @@
     el.querySelector('.sw-consent__btn--accept').addEventListener('click', function () {
       setStored('granted');
       el.parentNode && el.parentNode.removeChild(el);
-      initPixel();
+      loadTrackers();
     });
     el.querySelector('.sw-consent__btn--decline').addEventListener('click', function () {
       setStored('denied');
@@ -115,9 +140,9 @@
   function boot() {
     attachClickTracking();
     var stored = getStored();
-    if (stored === 'granted') return initPixel();
+    if (stored === 'granted') return loadTrackers();
     if (stored === 'denied') return;          // respect previous decline
-    if (!isLikelyEU()) return initPixel();    // no banner for non-EU
+    if (!isLikelyEU()) return loadTrackers(); // no banner for non-EU
     if (document.body) showBanner();
     else document.addEventListener('DOMContentLoaded', showBanner);
   }
