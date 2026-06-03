@@ -1,22 +1,40 @@
-/* consent.js — Meta Pixel + EU consent gate + outbound-click tracking.
+/* consent.js — Google Consent Mode v2 + Meta Pixel + outbound-click tracking.
  *
- * Behaviour:
- *   - If consent stored ("granted"/"denied") in localStorage → honour it.
- *   - Else if visitor is likely in EU/EEA/UK (rough timezone heuristic) →
- *     show a small banner and wait for accept/decline.
- *   - Else → load the Pixel immediately (no banner shown).
+ * Approach:
+ *   - Google Analytics 4 (gtag.js) is ALWAYS loaded so it can send cookieless
+ *     pings under Consent Mode v2. Default consent state is:
+ *       • EU + no decision yet → denied (banner shown)
+ *       • EU + user previously declined → denied (no banner)
+ *       • EU + user previously accepted → granted (no banner)
+ *       • Non-EU → granted (no banner)
+ *     When the user clicks Accept, we update consent → granted, which
+ *     unlocks regular GA tracking with cookies.
  *
- * Pixel events:
- *   - PageView on load (after consent).
- *   - trackCustom Click{Substack|Litres|AuthorToday|Telegram} on outbound
- *     anchor clicks site-wide.
- *   - Standard Lead event when the subscribe form is submitted
- *     (fired by app.jsx Subscribe component).
+ *   - Meta Pixel is binary: it does NOT have a real consent-mode equivalent
+ *     in the EU. We only load it after a "granted" decision. Visitors who
+ *     decline never get Pixel.
+ *
+ *   - Outbound clicks (substack/litres/author.today/telegram) are mirrored
+ *     to both fbq trackCustom and gtag('event','outbound_click', …).
  */
 (function () {
   var PIXEL_ID = '1323897889151084';
-  var GA_ID = 'G-40QGHVQLRK';
+  var GA_ID    = 'G-40QGHVQLRK';
   var STORAGE_KEY = 'sw_consent_pixel';
+
+  var GRANTED = {
+    ad_storage:          'granted',
+    ad_user_data:        'granted',
+    ad_personalization:  'granted',
+    analytics_storage:   'granted',
+  };
+  var DENIED = {
+    ad_storage:          'denied',
+    ad_user_data:        'denied',
+    ad_personalization:  'denied',
+    analytics_storage:   'denied',
+    wait_for_update:     500, // give the user 500ms to click before pings fire
+  };
 
   function getStored() {
     try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
@@ -25,20 +43,39 @@
     try { localStorage.setItem(STORAGE_KEY, v); } catch (e) {}
   }
 
-  // Rough EEA / UK / Switzerland detection by browser timezone.
-  // Overinclusive (e.g. Russia, Turkey, Ukraine also fall under Europe/*),
-  // which is fine — overshowing the banner is harmless.
   function isLikelyEU() {
     try {
-      var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
       if (tz.indexOf('Europe/') === 0) return true;
-      if (tz === 'Atlantic/Reykjavik') return true;  // Iceland (EEA)
-      if (tz === 'Atlantic/Faroe') return true;       // Faroes (DK)
-      if (tz === 'Atlantic/Madeira') return true;     // Portugal
-      if (tz === 'Atlantic/Azores') return true;      // Portugal
-      if (tz === 'Atlantic/Canary') return true;      // Spain
+      if (tz === 'Atlantic/Reykjavik') return true;
+      if (tz === 'Atlantic/Faroe') return true;
+      if (tz === 'Atlantic/Madeira') return true;
+      if (tz === 'Atlantic/Azores') return true;
+      if (tz === 'Atlantic/Canary') return true;
       return false;
     } catch (e) { return false; }
+  }
+
+  function initGA(defaultConsent) {
+    if (window.__swGAInited) return;
+    window.__swGAInited = true;
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    // Consent default MUST be set before any other gtag calls.
+    gtag('consent', 'default', defaultConsent);
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+  }
+
+  function updateGAConsent(state) {
+    if (window.gtag) {
+      try { window.gtag('consent', 'update', state); } catch (e) {}
+    }
   }
 
   function initPixel() {
@@ -54,27 +91,6 @@
     window.fbq('track', 'PageView');
   }
 
-  function initGA() {
-    if (window.__swGAInited) return;
-    window.__swGAInited = true;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', GA_ID);
-  }
-
-  function loadTrackers() {
-    initPixel();
-    initGA();
-  }
-
-  // Outbound-click tracking — attaches regardless of consent state; only
-  // fires events if the trackers are actually loaded.
   function attachClickTracking() {
     document.addEventListener('click', function (e) {
       var a = e.target && e.target.closest && e.target.closest('a[href]');
@@ -86,7 +102,9 @@
       else if (/author\.today/i.test(href)) provider = 'author_today';
       else if (/(^|\/\/)t\.me\//i.test(href) || /telegram\.me/i.test(href)) provider = 'telegram';
       if (!provider) return;
-      var pixelName = 'Click' + provider.split('_').map(function (s) { return s[0].toUpperCase() + s.slice(1); }).join('');
+      var pixelName = 'Click' + provider.split('_').map(function (s) {
+        return s[0].toUpperCase() + s.slice(1);
+      }).join('');
       if (window.fbq) {
         try { window.fbq('trackCustom', pixelName, { href: href }); } catch (err) {}
       }
@@ -128,21 +146,37 @@
     el.querySelector('.sw-consent__btn--accept').addEventListener('click', function () {
       setStored('granted');
       el.parentNode && el.parentNode.removeChild(el);
-      loadTrackers();
+      updateGAConsent(GRANTED);
+      initPixel();
     });
     el.querySelector('.sw-consent__btn--decline').addEventListener('click', function () {
       setStored('denied');
       el.parentNode && el.parentNode.removeChild(el);
+      // GA stays loaded but in denied state — cookieless pings only.
     });
   }
 
-  // Bootstrap: decide what to do based on stored consent + region.
   function boot() {
     attachClickTracking();
     var stored = getStored();
-    if (stored === 'granted') return loadTrackers();
-    if (stored === 'denied') return;          // respect previous decline
-    if (!isLikelyEU()) return loadTrackers(); // no banner for non-EU
+
+    if (stored === 'granted') {
+      initGA(GRANTED);
+      initPixel();
+      return;
+    }
+    if (stored === 'denied') {
+      initGA(DENIED); // cookieless pings only
+      return;
+    }
+    // First visit, no stored decision.
+    if (!isLikelyEU()) {
+      initGA(GRANTED);
+      initPixel();
+      return;
+    }
+    // EU first visit — show banner, default denied.
+    initGA(DENIED);
     if (document.body) showBanner();
     else document.addEventListener('DOMContentLoaded', showBanner);
   }
