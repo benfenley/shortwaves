@@ -219,10 +219,15 @@ function Hero({ t, lang, showMap }) {
           <DialTicks labels={t.dial} />
         </div>
         <aside className="hero__vitrine" aria-label="book cover">
-          <div className="vitrine">
+          <a
+            className="vitrine"
+            href={lang === "ru" ? (SITE_BASE + "ru/1/") : "https://shortwaves.substack.com/p/chapter-1"}
+            aria-label={lang === "ru" ? "Открыть первую главу" : "Read chapter one"}
+            {...(lang === "ru" ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+          >
             <div className="vitrine__shadow" aria-hidden="true"></div>
             <img className="vitrine__cover" src={asset(lang === "ru" ? "assets/cover-ru.jpg" : "assets/cover-en.jpg")} alt={lang === "ru" ? "Обложка «Короткие волны»" : "Short Waves cover"} />
-          </div>
+          </a>
           <ul className="hero__meta">
             {t.heroMeta.map((m, i) => <li key={i}>{m}</li>)}
           </ul>
