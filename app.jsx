@@ -550,7 +550,7 @@ function readChapterSize() {
 }
 
 const CHAPTER_CTAS = [
-  { label: "Читать на Литрес",       href: "https://www.litres.ru/73979788/" },
+  { label: "Купить на Литрес",       href: "https://www.litres.ru/73979788/" },
   { label: "Читать на Substack",     href: "https://benfenley.substack.com/" },
   { label: "Подписаться в Telegram", href: "https://t.me/short_waves" },
 ];
