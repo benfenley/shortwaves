@@ -635,7 +635,12 @@ function ChapterPage({ num }) {
           <ul className="chapter__cta-list">
             {CHAPTER_CTAS.map((c, i) => (
               <li key={i}>
-                <a className="btn" href={c.href} target="_blank" rel="noopener noreferrer">{c.label}</a>
+                <a
+                  className={"btn" + (hasNext ? "" : " btn--primary")}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{c.label}</a>
               </li>
             ))}
           </ul>
