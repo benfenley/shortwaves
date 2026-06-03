@@ -454,6 +454,9 @@ function Subscribe({ t, lang }) {
     const body = new FormData();
     body.append(SUBSCRIBE_FORM_EMAIL_FIELD, email);
     fetch(SUBSCRIBE_FORM_ACTION, { method: "POST", mode: "no-cors", body }).catch(() => {});
+    if (typeof window !== "undefined" && window.fbq) {
+      try { window.fbq("track", "Lead"); } catch (_) {}
+    }
     setDone(true);
   };
   return (
