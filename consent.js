@@ -76,11 +76,11 @@
     var lang = (document.documentElement.lang || 'ru').toLowerCase();
     var EN = lang.indexOf('en') === 0;
     var STR = EN ? {
-      msg: 'We use Meta Pixel to understand how readers find this site. It sets cookies.',
+      msg: 'We use cookies for anonymous analytics.',
       accept: 'Accept',
       decline: 'Decline',
     } : {
-      msg: 'Мы используем Meta Pixel — анонимная аналитика, помогает понимать, как читатели находят сайт. Ставит куки.',
+      msg: 'Мы используем cookie для анонимной аналитики.',
       accept: 'Принять',
       decline: 'Отклонить',
     };
