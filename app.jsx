@@ -538,6 +538,17 @@ function Author({ t, lang }) {
 
 // ---------- Chapter page (RU only, paths like /ru/1/, /ru/2/, /ru/3/) ----------
 
+const CHAPTER_SIZE_KEY = "sw_chapter_size";
+const CHAPTER_SIZE_MIN = -1;
+const CHAPTER_SIZE_MAX = 2;
+function readChapterSize() {
+  try {
+    const v = parseInt(localStorage.getItem(CHAPTER_SIZE_KEY) || "0", 10);
+    if (v >= CHAPTER_SIZE_MIN && v <= CHAPTER_SIZE_MAX) return v;
+  } catch (e) {}
+  return 0;
+}
+
 const CHAPTER_CTAS = [
   { label: "Продолжить на Author.Today", href: "https://author.today/work/596267" },
   { label: "Читать на Литрес",           href: "https://www.litres.ru/73979788/" },
@@ -549,6 +560,12 @@ function ChapterPage({ num }) {
   const list = (window.SW_CHAPTERS && window.SW_CHAPTERS.ru) || [];
   const ch = list.find(c => c.num === num);
   const total = list.length;
+  const [size, setSize] = useState(readChapterSize);
+  const adjustSize = (delta) => {
+    const next = Math.max(CHAPTER_SIZE_MIN, Math.min(CHAPTER_SIZE_MAX, size + delta));
+    setSize(next);
+    try { localStorage.setItem(CHAPTER_SIZE_KEY, String(next)); } catch (e) {}
+  };
   if (!ch) {
     return (
       <main className="chapter">
@@ -565,13 +582,29 @@ function ChapterPage({ num }) {
       <div className="wrap chapter__inner">
         <div className="chapter__topnav">
           <a href={SITE_BASE + "ru/"}>← На главную</a>
-          <span className="chapter__topnav-meta">{`Глава ${num} из ${total}`}</span>
+          <div className="chapter__topnav-right">
+            <div className="chapter__zoom" role="group" aria-label="Размер текста">
+              <button
+                type="button"
+                onClick={() => adjustSize(-1)}
+                disabled={size <= CHAPTER_SIZE_MIN}
+                aria-label="Уменьшить шрифт"
+              >A−</button>
+              <button
+                type="button"
+                onClick={() => adjustSize(1)}
+                disabled={size >= CHAPTER_SIZE_MAX}
+                aria-label="Увеличить шрифт"
+              >A+</button>
+            </div>
+            <span className="chapter__topnav-meta">{`Глава ${num} из ${total}`}</span>
+          </div>
         </div>
         <header className="chapter__head">
           <h1 className="chapter__num">{ch.title}</h1>
           <p className="chapter__loc">{ch.subtitle}</p>
         </header>
-        <div className="chapter__body">
+        <div className="chapter__body" data-size={size}>
           {ch.scenes.map((scene, si) => (
             <React.Fragment key={si}>
               {si > 0 && <div className="chapter__sep" aria-hidden="true">⁂</div>}
