@@ -570,9 +570,21 @@ function ChapterPage({ num }) {
           {ch.scenes.map((scene, si) => (
             <React.Fragment key={si}>
               {si > 0 && <div className="chapter__sep" aria-hidden="true">⁂</div>}
-              {scene.map((para, pi) => (
-                <p className="chapter__line" key={pi}>{para}</p>
-              ))}
+              {scene.map((item, pi) => {
+                if (typeof item === "string") {
+                  return <p className="chapter__line" key={pi}>{item}</p>;
+                }
+                if (item && item.kind === "block") {
+                  return (
+                    <div className="chapter__block" key={pi}>
+                      {item.lines.map((line, li) => (
+                        <span className="chapter__block-line" key={li}>{line}</span>
+                      ))}
+                    </div>
+                  );
+                }
+                return null;
+              })}
             </React.Fragment>
           ))}
         </div>
