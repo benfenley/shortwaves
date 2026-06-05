@@ -596,7 +596,6 @@ function ChapterPage({ num }) {
                 aria-label="Увеличить шрифт"
               >A+</button>
             </div>
-            <span className="chapter__topnav-meta">{`Глава ${num} из ${total}`}</span>
           </div>
         </div>
         <header className="chapter__head">
