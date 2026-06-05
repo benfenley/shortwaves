@@ -550,10 +550,10 @@ function readChapterSize() {
 }
 
 const CHAPTER_CTAS = [
-  { label: "Читать на Substack",     href: "https://benfenley.substack.com/" },
-  { label: "Купить на Литрес",       href: "https://www.litres.ru/73979788/" },
-  { label: "Купить в Google Play",   href: "https://play.google.com/store/books/details?id=p3bgEQAAQBAJ" },
-  { label: "Подписаться в Telegram", href: "https://t.me/short_waves" },
+  { label: "Читать бесплатно на Google Play Books", href: "https://play.google.com/store/books/details?id=p3bgEQAAQBAJ" },
+  { label: "Читать бесплатно на Литрес",            href: "https://www.litres.ru/73979788/" },
+  { label: "Читать на Substack",                    href: "https://benfenley.substack.com/" },
+  { label: "Подписаться в Telegram",                href: "https://t.me/short_waves" },
 ];
 
 function ChapterPage({ num }) {
@@ -627,7 +627,7 @@ function ChapterPage({ num }) {
           ))}
         </div>
         <nav className="chapter__cta" aria-label="продолжение">
-          {hasNext && (
+          {hasNext && num !== 1 && (
             <a className="btn btn--primary chapter__cta-next" href={SITE_BASE + "ru/" + (num + 1) + "/"}>
               Глава {num + 1} →
             </a>
@@ -636,7 +636,7 @@ function ChapterPage({ num }) {
             {CHAPTER_CTAS.map((c, i) => (
               <li key={i}>
                 <a
-                  className={"btn" + (hasNext ? "" : " btn--primary")}
+                  className="btn btn--primary"
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
