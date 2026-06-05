@@ -99,6 +99,7 @@
       var provider = null;
       if (/substack\.com/i.test(href)) provider = 'substack';
       else if (/litres\.ru/i.test(href)) provider = 'litres';
+      else if (/play\.google\.com\/store\/books/i.test(href)) provider = 'google_play';
       else if (/(^|\/\/)t\.me\//i.test(href) || /telegram\.me/i.test(href)) provider = 'telegram';
       if (!provider) return;
       var pixelName = 'Click' + provider.split('_').map(function (s) {

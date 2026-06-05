@@ -552,6 +552,7 @@ function readChapterSize() {
 const CHAPTER_CTAS = [
   { label: "Читать на Substack",     href: "https://benfenley.substack.com/" },
   { label: "Купить на Литрес",       href: "https://www.litres.ru/73979788/" },
+  { label: "Купить в Google Play",   href: "https://play.google.com/store/books/details?id=p3bgEQAAQBAJ" },
   { label: "Подписаться в Telegram", href: "https://t.me/short_waves" },
 ];
 

@@ -153,6 +153,7 @@ window.SW_CONTENT = {
 
     footerLinks: [
       { label: "Литрес", href: "https://www.litres.ru/73979788/" },
+      { label: "Google Play", href: "https://play.google.com/store/books/details?id=p3bgEQAAQBAJ" },
       { label: "Substack", href: "https://benfenley.substack.com/" },
       { label: "Telegram", href: "https://t.me/short_waves" },
       { label: "Newsletter", href: "#subscribe" },
