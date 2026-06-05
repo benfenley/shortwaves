@@ -1454,6 +1454,14 @@ body[data-surface="night"] .site-footer { background: #0c0a07; }
   margin-bottom: 26px;
   min-width: 220px;
 }
+.chapter__cta-teaser {
+  margin: 0 0 22px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
 .chapter__cta-list {
   list-style: none;
   padding: 0;

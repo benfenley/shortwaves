@@ -631,6 +631,14 @@ function ChapterPage({ num }) {
               Глава {num + 1} →
             </a>
           )}
+          {hasNext && num === 1 && (() => {
+            const next = list.find(c => c.num === num + 1);
+            return next ? (
+              <p className="chapter__cta-teaser">
+                {`${next.title}. ${next.subtitle}`}
+              </p>
+            ) : null;
+          })()}
           <ul className="chapter__cta-list">
             {CHAPTER_CTAS.map((c, i) => (
               <li key={i}>
